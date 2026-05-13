@@ -1,7 +1,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaGithub, FaLinkedin, FaTwitter, FaDownload, FaCode, FaServer, FaDatabase } from "react-icons/fa";
+import { FaDownload, FaCode, FaServer, FaDatabase } from "react-icons/fa";
 import { SiMongodb, SiExpress, SiReact, SiNodedotjs, SiTailwindcss, SiTypescript, SiDocker, SiGit, SiRedux, SiPostman, SiFirebase, SiVercel } from "react-icons/si";
 
 /* ─── Cursor spotlight ─── */
@@ -75,7 +75,7 @@ function TerminalAbout() {
   const lines = [
     { label: "name",         value: "Fahim Mubasshir Sajid",    color: "#C3E88D" },
     { label: "age",          value: "25",                        color: "#F78C6C" },
-    { label: "location",     value: "Sylhet, Bangladesh",     color: "#C3E88D" },
+    { label: "location",     value: "Sylhet, Bangladesh",        color: "#C3E88D" },
     { label: "education",    value: "Computer Science & Eng.",   color: "#C3E88D" },
     { label: "experience",   value: "2+ Years",                  color: "#F78C6C" },
     { label: "specialty",    value: "MERN Stack Development",    color: "#C3E88D" },
@@ -170,15 +170,110 @@ function AvatarBlock() {
   );
 }
 
-/* ─── Skills ─── */
+/* ══════════════════════════════════════════
+   02 — CORE VALUES
+   Card design mirrors SkillCategory style
+══════════════════════════════════════════ */
+const VALUES = [
+  {
+    icon: "🎯", title: "Clean Code",
+    desc: "I believe great code reads like prose — clear, purposeful, and maintainable by anyone on the team.",
+    color: "#14B8A6",
+  },
+  {
+    icon: "⚡", title: "Performance First",
+    desc: "Every millisecond counts. I optimize for speed without sacrificing readability or developer experience.",
+    color: "#F78C6C",
+  },
+  {
+    icon: "🧩", title: "Problem Solver",
+    desc: "Complex challenges broken into elegant, scalable solutions — that's what drives me forward every day.",
+    color: "#A78BFA",
+  },
+  {
+    icon: "📚", title: "Lifelong Learner",
+    desc: "The tech landscape evolves fast. I stay ahead through constant learning, curiosity, and experimentation.",
+    color: "#FFCA28",
+  },
+];
+
+function ValueCard({ icon, title, desc, color, index }) {
+  const [hov, setHov] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 + index * 0.12, duration: 0.7, ease: [0.22,1,0.36,1] }}
+      onHoverStart={() => setHov(true)}
+      onHoverEnd={() => setHov(false)}
+      data-hover
+      style={{
+        padding: "22px 20px", borderRadius: 12, cursor: "default",
+        border: `1px solid ${hov ? color + "45" : "rgba(255,255,255,0.07)"}`,
+        background: hov ? color + "09" : "rgba(255,255,255,0.02)",
+        transition: "border-color 0.3s, background 0.3s",
+        display: "flex", flexDirection: "column", gap: 14,
+        position: "relative", overflow: "hidden",
+      }}
+    >
+      {/* Glow on hover */}
+      <motion.div
+        animate={{ opacity: hov ? 1 : 0, scale: hov ? 1 : 0.6 }}
+        transition={{ duration: 0.4 }}
+        style={{
+          position: "absolute", top: -50, right: -50,
+          width: 140, height: 140, borderRadius: "50%",
+          background: `radial-gradient(circle, ${color}1A 0%, transparent 70%)`,
+          filter: "blur(24px)", pointerEvents: "none",
+        }}
+      />
+
+      {/* Icon — same badge style as SkillCategory */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{
+          width: 36, height: 36, borderRadius: 8, flexShrink: 0,
+          background: hov ? color + "18" : color + "0D",
+          border: `1px solid ${hov ? color + "50" : color + "28"}`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 16, transition: "background 0.3s, border-color 0.3s",
+        }}>
+          {icon}
+        </div>
+        <span style={{
+          fontFamily: "'DM Mono', monospace", fontSize: 11,
+          color: hov ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.35)",
+          letterSpacing: 1, textTransform: "uppercase",
+          transition: "color 0.3s",
+        }}>{title}</span>
+      </div>
+
+      {/* Thin accent line */}
+      <div style={{
+        height: 1,
+        background: hov ? `linear-gradient(90deg, ${color}40, transparent)` : "rgba(255,255,255,0.04)",
+        transition: "background 0.4s",
+      }} />
+
+      <p style={{
+        fontSize: 12.5, color: "rgba(255,255,255,0.32)", lineHeight: 1.8,
+        fontFamily: "'DM Sans', sans-serif", fontWeight: 300,
+        textAlign: "justify", textJustify: "inter-word",
+      }}>{desc}</p>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════
+   03 — SKILLS & STACK
+══════════════════════════════════════════ */
 const SKILLS = [
   {
     icon: FaCode, label: "Frontend", color: "#61DAFB",
     items: [
-      { icon: SiReact,      name: "React.js",     level: 92, color: "#61DAFB" },
-      { icon: SiTypescript, name: "TypeScript",   level: 78, color: "#3178C6" },
-      { icon: SiRedux,      name: "Redux",        level: 80, color: "#764ABC" },
-      { icon: SiTailwindcss,name: "Tailwind CSS", level: 90, color: "#06B6D4" },
+      { icon: SiReact,       name: "React.js",     level: 92, color: "#61DAFB" },
+      { icon: SiTypescript,  name: "TypeScript",   level: 78, color: "#3178C6" },
+      { icon: SiRedux,       name: "Redux",        level: 80, color: "#764ABC" },
+      { icon: SiTailwindcss, name: "Tailwind CSS", level: 90, color: "#06B6D4" },
     ],
   },
   {
@@ -226,7 +321,9 @@ function SkillBar({ name, level, color, icon: Icon, index }) {
           transition={{ delay: 0.3 + 0.1 * index, duration: 0.9, ease: [0.22,1,0.36,1] }}
           style={{
             height: "100%", borderRadius: 2,
-            background: hov ? `linear-gradient(90deg, ${color}aa, ${color})` : "linear-gradient(90deg, rgba(20,184,166,0.4), rgba(20,184,166,0.7))",
+            background: hov
+              ? `linear-gradient(90deg, ${color}aa, ${color})`
+              : "linear-gradient(90deg, rgba(20,184,166,0.4), rgba(20,184,166,0.7))",
             transition: "background 0.3s",
           }}
         />
@@ -262,44 +359,11 @@ function SkillCategory({ icon: Icon, label, color, items, delay }) {
   );
 }
 
-/* ─── Values ─── */
-const VALUES = [
-  { icon: "🎯", title: "Clean Code",        desc: "I believe great code reads like prose — clear, purposeful, and maintainable." },
-  { icon: "⚡", title: "Performance First", desc: "Every millisecond counts. I optimize for speed without sacrificing readability." },
-  { icon: "🧩", title: "Problem Solver",    desc: "Complex problems broken into elegant, scalable solutions is what drives me." },
-  { icon: "📚", title: "Lifelong Learner",  desc: "The tech landscape evolves fast — I stay ahead through constant learning." },
-];
-
-function ValueCard({ icon, title, desc, index }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.12 * index, duration: 0.6, ease: [0.22,1,0.36,1] }}
-      onHoverStart={() => setHov(true)}
-      onHoverEnd={() => setHov(false)}
-      whileHover={{ y: -3 }}
-      data-hover
-      style={{
-        padding: "18px 20px", borderRadius: 10, cursor: "default",
-        border: `1px solid ${hov ? "rgba(20,184,166,0.2)" : "rgba(255,255,255,0.06)"}`,
-        background: hov ? "rgba(20,184,166,0.04)" : "rgba(255,255,255,0.02)",
-        transition: "border-color 0.3s, background 0.3s",
-      }}
-    >
-      <div style={{ fontSize: 24, marginBottom: 10 }}>{icon}</div>
-      <h4 style={{ fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.85)", marginBottom: 7, fontFamily: "'Clash Display', sans-serif", letterSpacing: "-0.2px" }}>{title}</h4>
-      <p style={{ fontSize: 12.5, color: "rgba(255,255,255,0.3)", lineHeight: 1.75, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>{desc}</p>
-    </motion.div>
-  );
-}
-
 /* ════════════════════════════
    Main About Page
 ════════════════════════════ */
 export default function About() {
-  const navigate = useNavigate(); // ← navigation hook
+  const navigate = useNavigate();
 
   const mouseXN = useMotionValue(0.5);
   const mouseYN = useMotionValue(0.5);
@@ -341,64 +405,88 @@ export default function About() {
           cursor: none; font-family: 'DM Mono', monospace; letter-spacing: 0.5px;
           transition: border-color 0.3s, color 0.3s, background 0.3s;
         }
-        .btn-outline:hover { border-color: rgba(20,184,166,0.4); color: #14B8A6; background: rgba(20,184,166,0.05); }
+        .btn-outline:hover {
+          border-color: rgba(20,184,166,0.4); color: #14B8A6;
+          background: rgba(20,184,166,0.05);
+        }
 
-        .soc { width: 37px; height: 37px; border-radius: 7px; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.3); text-decoration: none; transition: border-color 0.3s, color 0.3s, background 0.3s; cursor: none; flex-shrink: 0; }
-        .soc:hover { border-color: rgba(20,184,166,0.35); color: #14B8A6; background: rgba(20,184,166,0.06); }
-
-        .noise { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 200px; }
-        .scanlines { position: fixed; inset: 0; pointer-events: none; z-index: 1; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px); }
+        .noise {
+          position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.025;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size: 200px;
+        }
+        .scanlines {
+          position: fixed; inset: 0; pointer-events: none; z-index: 1;
+          background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px);
+        }
 
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #06060A; }
         ::-webkit-scrollbar-thumb { background: rgba(20,184,166,0.3); border-radius: 2px; }
 
+        /* ── 01: identity ── */
         .identity-grid {
           display: grid;
-          grid-template-columns: 1fr 1.6fr;
-          gap: 48px;
+          grid-template-columns: 300px 1fr;
+          gap: 56px;
           margin-bottom: 96px;
           align-items: start;
         }
 
+        /* ── 02: core values — 4 cols ── */
+        .values-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+        }
+
+        /* ── 03: skills — 3 cols ── */
         .skills-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 20px;
         }
 
-        .values-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
-        }
-
         .cta-row {
-          display: flex;
-          gap: 10px;
-          margin-top: 20px;
-          flex-wrap: wrap;
+          display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;
         }
         .cta-row button { flex: 1; min-width: 120px; }
 
-        .soc-row {
-          display: flex;
-          gap: 8px;
-          margin-top: 14px;
-          flex-wrap: wrap;
-        }
+        /* ── Bio text ── */
+        .bio-block { display: flex; flex-direction: column; }
 
+        .bio-para {
+          font-family: 'DM Sans', sans-serif;
+          font-size: clamp(13.5px, 1.5vw, 15px);
+          color: rgba(255,255,255,0.42);
+          line-height: 1.95;
+          font-weight: 300;
+          padding: 16px 0;
+          border-bottom: 1px solid rgba(255,255,255,0.04);
+          /* ── justified alignment ── */
+          text-align: justify;
+          text-justify: inter-word;
+        }
+        .bio-para:first-child { padding-top: 0; }
+        .bio-para:last-child  { border-bottom: none; }
+
+        .bio-highlight { color: rgba(255,255,255,0.88); font-weight: 500; }
+        .bio-accent    { color: #14B8A6; font-weight: 500; }
+
+        /* ── Responsive ── */
+        @media (max-width: 1100px) {
+          .values-grid { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (max-width: 960px) {
           .identity-grid { grid-template-columns: 1fr; gap: 40px; }
-          .skills-grid { grid-template-columns: 1fr 1fr; }
+          .skills-grid   { grid-template-columns: 1fr 1fr; }
+          .values-grid   { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (max-width: 640px) {
           .identity-grid { gap: 32px; margin-bottom: 64px; }
-          .skills-grid { grid-template-columns: 1fr; }
-          .values-grid { grid-template-columns: 1fr; }
+          .skills-grid   { grid-template-columns: 1fr; }
+          .values-grid   { grid-template-columns: 1fr 1fr; }
         }
-
         @media (max-width: 400px) {
           .values-grid { grid-template-columns: 1fr; }
         }
@@ -430,7 +518,11 @@ export default function About() {
           }}
         />
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.028 }} xmlns="http://www.w3.org/2000/svg">
-          <defs><pattern id="g" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0L0 0 0 60" fill="none" stroke="white" strokeWidth="0.5" /></pattern></defs>
+          <defs>
+            <pattern id="g" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M60 0L0 0 0 60" fill="none" stroke="white" strokeWidth="0.5" />
+            </pattern>
+          </defs>
           <rect width="100%" height="100%" fill="url(#g)" />
         </svg>
       </motion.div>
@@ -438,7 +530,7 @@ export default function About() {
       {/* ── Page content ── */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "110px 6% 100px", position: "relative", zIndex: 2 }}>
 
-        {/* ── Hero ── */}
+        {/* ── Page heading ── */}
         <motion.div
           initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -452,8 +544,11 @@ export default function About() {
           }}>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "#14B8A6" }}>~/about</span>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.22)" }}>--me</span>
-            <motion.span animate={{ opacity: [1,0] }} transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-              style={{ color: "#14B8A6", fontFamily: "'DM Mono', monospace", fontSize: 11 }}>▋</motion.span>
+            <motion.span
+              animate={{ opacity: [1,0] }}
+              transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+              style={{ color: "#14B8A6", fontFamily: "'DM Mono', monospace", fontSize: 11 }}
+            >▋</motion.span>
           </div>
           <h1 style={{ fontSize: "clamp(38px, 6vw, 78px)", fontWeight: 700, letterSpacing: "-3px", lineHeight: 0.94, marginBottom: 18 }}>
             About <span style={{ color: "#14B8A6" }}>Me</span>
@@ -464,15 +559,15 @@ export default function About() {
           </p>
         </motion.div>
 
-        {/* ── Section 01: Identity ── */}
+        {/* ══════════════════════════════════════
+            01 / WHO AM I
+        ══════════════════════════════════════ */}
         <div className="identity-grid">
 
-          {/* Left column: avatar + terminal + CTAs */}
+          {/* Left: avatar + terminal + buttons */}
           <div>
             <AvatarBlock />
             <TerminalAbout />
-
-            {/* ── CTA Buttons — now wired up ── */}
             <div className="cta-row">
               <motion.button
                 className="btn-primary" data-hover
@@ -489,40 +584,82 @@ export default function About() {
                 contact.me()
               </motion.button>
             </div>
-
-
           </div>
 
-          {/* Right column: bio + values */}
+          {/* Right: justified bio */}
           <div>
             <SectionLabel>01 / who am i</SectionLabel>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8, ease: [0.22,1,0.36,1] }}
             >
-              <p style={{ fontSize: "clamp(13.5px, 1.6vw, 15.5px)", color: "rgba(255,255,255,0.55)", lineHeight: 1.95, marginBottom: 20, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>
-                I'm <span style={{ color: "rgba(255,255,255,0.85)", fontWeight: 500 }}>Fahim Mubasshir Sajid</span>, a full-stack developer specializing in the <span style={{ color: "#14B8A6" }}>MERN stack</span>. I love bridging the gap between beautiful UI and powerful backend systems, building applications that are not just functional — but genuinely delightful to use.
-              </p>
-              <p style={{ fontSize: "clamp(13.5px, 1.6vw, 15.5px)", color: "rgba(255,255,255,0.38)", lineHeight: 1.95, marginBottom: 20, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>
-                With 2+ years of hands-on experience, I've shipped production apps ranging from real-time dashboards and e-commerce platforms to REST APIs powering mobile clients. I write code that's clean, tested, and built to scale.
-              </p>
-              <p style={{ fontSize: "clamp(13.5px, 1.6vw, 15.5px)", color: "rgba(255,255,255,0.38)", lineHeight: 1.95, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>
-                When I'm not coding, I'm exploring new technologies, contributing to open-source, or diving deep into system design concepts that make software more robust and resilient.
-              </p>
+              <div className="bio-block">
 
-              <div style={{ height: 1, background: "rgba(255,255,255,0.05)", margin: "28px 0" }} />
+                <p className="bio-para">
+                  I'm{" "}
+                  <span className="bio-highlight">Fahim Mubasshir Sajid</span>
+                  , a full-stack developer specializing in the{" "}
+                  <span className="bio-accent">MERN stack</span>. I love bridging
+                  the gap between beautiful UI and powerful backend systems, building
+                  applications that are not just functional — but genuinely delightful
+                  to use.
+                </p>
 
-              <div className="values-grid">
-                {VALUES.map((v, i) => <ValueCard key={v.title} {...v} index={i} />)}
+                <p className="bio-para">
+                  With <span className="bio-highlight">2+ years</span> of hands-on
+                  experience, I've shipped production apps ranging from real-time
+                  dashboards and e-commerce platforms to REST APIs powering mobile
+                  clients. I write code that's clean, tested, and built to scale.
+                </p>
+
+                <p className="bio-para">
+                  Beyond full-stack development, I'm deeply passionate about{" "}
+                  <span className="bio-accent">Data Science</span> and{" "}
+                  <span className="bio-accent">Machine Learning</span>. I'm fascinated
+                  by how intelligent systems can transform raw data into meaningful
+                  insights and impactful digital experiences. Currently, I'm exploring
+                  ML fundamentals, AI-powered applications, and data-driven
+                  architectures to expand my expertise beyond traditional web
+                  development.
+                </p>
+
+                <p className="bio-para">
+                  In the future, I aim to work at the intersection of{" "}
+                  <span className="bio-highlight">software engineering and AI</span>{" "}
+                  — building scalable products powered by Machine Learning, modern
+                  data technologies, and intelligent user-centered systems.
+                </p>
+
+                <p className="bio-para">
+                  When I'm not coding, I'm exploring new technologies, contributing
+                  to open-source, or diving deep into system design concepts that
+                  make software more robust and resilient.
+                </p>
+
               </div>
             </motion.div>
           </div>
         </div>
 
-        {/* ── Section 02: Skills ── */}
+        {/* ══════════════════════════════════════
+            02 / CORE VALUES
+        ══════════════════════════════════════ */}
         <div style={{ marginBottom: 80 }}>
-          <SectionLabel>02 / skills & stack</SectionLabel>
+          <SectionLabel>02 / core values</SectionLabel>
+          <div className="values-grid">
+            {VALUES.map((v, i) => (
+              <ValueCard key={v.title} {...v} index={i} />
+            ))}
+          </div>
+        </div>
+
+        {/* ══════════════════════════════════════
+            03 / SKILLS & STACK
+        ══════════════════════════════════════ */}
+        <div style={{ marginBottom: 80 }}>
+          <SectionLabel>03 / skills & stack</SectionLabel>
           <div className="skills-grid">
             {SKILLS.map((cat, i) => (
               <SkillCategory key={cat.label} {...cat} delay={0.1 + i * 0.15} />
@@ -544,11 +681,18 @@ export default function About() {
           background: "rgba(6,6,10,0.75)", backdropFilter: "blur(20px)", zIndex: 10,
         }}
       >
-        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>© 2026 Fahim Mubasshir Sajid</span>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>
+          © 2026 Fahim Mubasshir Sajid
+        </span>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <motion.div animate={{ scale: [1,1.5,1], opacity: [1,0.4,1] }} transition={{ duration: 2, repeat: Infinity }}
-            style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ADE80" }} />
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>open to opportunities</span>
+          <motion.div
+            animate={{ scale: [1,1.5,1], opacity: [1,0.4,1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ADE80" }}
+          />
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>
+            open to opportunities
+          </span>
         </div>
       </motion.div>
     </div>

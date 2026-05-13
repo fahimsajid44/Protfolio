@@ -4,6 +4,7 @@ import {
   useScroll, useInView,
 } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { SiMongodb, SiExpress, SiReact, SiNodedotjs } from "react-icons/si";
 
 /* ══════════════════════════════════════════
@@ -286,7 +287,6 @@ function MaskReveal({ children, delay = 0 }) {
   );
 }
 
-/* ── FIXED: Each word tumbles in — readable on all screens ── */
 function SplitReveal({ text, tag = "h2", style = {}, delay = 0 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
@@ -341,7 +341,6 @@ function ParallaxDrift({ speed = 0.15, children, style = {} }) {
   );
 }
 
-/* ── FIXED ScrollScrubText: fully responsive, no overflow ── */
 function ScrollScrubText({ text, direction = 1 }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -356,7 +355,6 @@ function ScrollScrubText({ text, direction = 1 }) {
         position: "relative",
       }}
     >
-      {/* fade edges */}
       <div style={{
         position: "absolute", left: 0, top: 0, bottom: 0, width: "8%",
         background: "linear-gradient(to right, #06060A, transparent)",
@@ -443,9 +441,6 @@ function DrawLine({ delay = 0 }) {
   );
 }
 
-/* ══════════════════════════════════════════
-   NEW: SECTION HEADLINE — visible, animated, spaced words
-══════════════════════════════════════════ */
 function SectionHeadline({ words, delay = 0 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
@@ -476,7 +471,7 @@ function SectionHeadline({ words, delay = 0 }) {
 }
 
 /* ══════════════════════════════════════════
-   NEW: COUNTER ANIMATION
+   COUNTER ANIMATION
 ══════════════════════════════════════════ */
 function CountUp({ target, suffix = "", duration = 1800 }) {
   const [count, setCount] = useState(0);
@@ -635,14 +630,13 @@ function ServiceCard({ emoji, title, desc, index }) {
 }
 
 /* ══════════════════════════════════════════
-   NEW: FREELANCE OUTRO — fully responsive
+   FREELANCE OUTRO
 ══════════════════════════════════════════ */
 function FreelanceOutro() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
-  // Two rows scrub in opposite directions
   const xA = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
   const xB = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.3]);
@@ -657,13 +651,7 @@ function FreelanceOutro() {
         position: "relative",
       }}
     >
-
-
-
-
-
-
-      {/* Centered CTA that fades in */}
+      {/* Centered CTA */}
       <motion.div
         initial={{ opacity: 0, y: 24, scale: 0.95 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
@@ -705,25 +693,26 @@ function FreelanceOutro() {
           Have a project in mind? Let's talk and turn your idea into a production-ready product.
         </p>
 
-        <motion.a
-          href="mailto:fahim@example.com"
-          data-hover
-          whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(20,184,166,0.22)" }}
-          whileTap={{ scale: 0.97 }}
-          style={{
-            display: "inline-flex", alignItems: "center", gap: 10,
-            padding: "clamp(10px, 2vw, 14px) clamp(22px, 4vw, 36px)",
-            borderRadius: 8, textDecoration: "none", cursor: "none",
-            background: "rgba(20,184,166,0.08)",
-            border: "1px solid rgba(20,184,166,0.3)",
-            fontFamily: "'DM Mono', monospace",
-            fontSize: "clamp(11px, 1.5vw, 13px)",
-            color: "#14B8A6", letterSpacing: 2,
-            textTransform: "uppercase",
-          }}
-        >
-          Get in touch ↗
-        </motion.a>
+        {/* ── React Router Link to /contact ── */}
+        <Link to="/contact" data-hover style={{ textDecoration: "none" }}>
+          <motion.div
+            whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(20,184,166,0.22)" }}
+            whileTap={{ scale: 0.97 }}
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 10,
+              padding: "clamp(10px, 2vw, 14px) clamp(22px, 4vw, 36px)",
+              borderRadius: 8, cursor: "none",
+              background: "rgba(20,184,166,0.08)",
+              border: "1px solid rgba(20,184,166,0.3)",
+              fontFamily: "'DM Mono', monospace",
+              fontSize: "clamp(11px, 1.5vw, 13px)",
+              color: "#14B8A6", letterSpacing: 2,
+              textTransform: "uppercase",
+            }}
+          >
+            Get in touch ↗
+          </motion.div>
+        </Link>
       </motion.div>
     </div>
   );
@@ -872,8 +861,9 @@ export default function Home() {
             and secure Node.js back-ends. Based in Dhaka, Bangladesh, open to remote work worldwide.
           </motion.p>
 
+          {/* ── Stats row: "5★ Quality" removed ── */}
           <motion.div variants={it} className="stats-row-hero" style={{ marginBottom: 32 }}>
-            {[["15+","Projects"],["2+","Years Exp"],["10+","REST APIs"],["5★","Quality"]].map(([v,l], i) => (
+            {[["10+","Projects"],["2+","Years Exp"],["10+","REST APIs"]].map(([v,l], i) => (
               <StatCard key={l} value={v} label={l} i={i} />
             ))}
           </motion.div>
@@ -895,8 +885,6 @@ export default function Home() {
       {/* ═══════════════════ SCROLL SECTIONS ═══════════════════ */}
       <div className="section-wrap" style={{ position: "relative", zIndex: 2 }}>
 
-       
-
         {/* ── Technologies ── */}
         <div style={{ marginBottom: 80 }}>
           <GlitchReveal>
@@ -907,24 +895,6 @@ export default function Home() {
             <MarqueeRow items={SKILLS_B} reverse speed={24} />
           </ParallaxDrift>
         </div>
-
-        <DrawLine />
-
-        {/* ── Featured Projects ── */}
-        <div style={{ marginBottom: 80 }}>
-          <GlitchReveal delay={0.05}>
-            <SectionLabel>Featured Projects</SectionLabel>
-          </GlitchReveal>
-
-          {/* ── FIXED readable headline with alternating teal accent ── */}
-          <SectionHeadline words={["Things", "I've", "Built"]} delay={0.05} />
-
-          <div className="projects-grid">
-            {FEATURED.map((p, i) => <ProjectCard key={p.name} {...p} index={i} />)}
-          </div>
-        </div>
-
-        <DrawLine />
 
         {/* ── Parallax philosophy quote ── */}
         <ParallaxDrift speed={0.18} style={{ marginBottom: 80 }}>
@@ -960,25 +930,7 @@ export default function Home() {
           </div>
         </ParallaxDrift>
 
-        <DrawLine />
-
-        {/* ── What I Do ── */}
-        <div style={{ marginBottom: 80 }}>
-          <GlitchReveal delay={0.04}>
-            <SectionLabel>What I Do</SectionLabel>
-          </GlitchReveal>
-
-          {/* ── FIXED readable headline ── */}
-          <SectionHeadline words={["Services", "I", "Offer"]} delay={0.05} />
-
-          <div className="services-grid">
-            {SERVICES.map((s, i) => <ServiceCard key={s.title} {...s} index={i} />)}
-          </div>
-        </div>
-
-        <DrawLine />
-
-        {/* ── FIXED: Fully responsive freelance outro ── */}
+        {/* ── Freelance outro with router link ── */}
         <FreelanceOutro />
 
       </div>
