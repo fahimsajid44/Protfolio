@@ -13,22 +13,6 @@ import { Link } from "react-router-dom";
 /* ══════════════════════════════════════════
    REUSABLE ANIMATION PRIMITIVES
 ══════════════════════════════════════════ */
-function MaskReveal({ children, delay = 0 }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  return (
-    <div ref={ref} style={{ overflow: "hidden" }}>
-      <motion.div
-        initial={{ y: "110%" }}
-        animate={inView ? { y: "0%" } : {}}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay }}
-      >
-        {children}
-      </motion.div>
-    </div>
-  );
-}
-
 function FadeUp({ children, delay = 0, style = {} }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -470,10 +454,10 @@ function StatPill({ value, label, index }) {
    WHO I WORK WITH
 ══════════════════════════════════════════ */
 const CLIENTS = [
-  { icon: "◉", title: "Boutique Agencies", desc: "Expand your capacity without expanding your headcount. I slot into your workflow seamlessly." },
+  { icon: "◉", title: "Boutique Agencies",     desc: "Expand your capacity without expanding your headcount. I slot into your workflow seamlessly." },
   { icon: "◈", title: "Independent Designers", desc: "You own the vision. I'll handle every line of code to bring it to life exactly as imagined." },
-  { icon: "⬡", title: "Early-Stage Startups", desc: "Move fast without breaking things. Production-ready MVPs that scale from day one." },
-  { icon: "◇", title: "Established Brands", desc: "Rebuilds, performance overhauls, and new digital experiences for companies that need to level up." },
+  { icon: "⬡", title: "Early-Stage Startups",  desc: "Move fast without breaking things. Production-ready MVPs that scale from day one." },
+  { icon: "◇", title: "Established Brands",    desc: "Rebuilds, performance overhauls, and new digital experiences for companies that need to level up." },
 ];
 
 function ClientCard({ icon, title, desc, index }) {

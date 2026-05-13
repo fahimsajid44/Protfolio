@@ -341,61 +341,6 @@ function ParallaxDrift({ speed = 0.15, children, style = {} }) {
   );
 }
 
-function ScrollScrubText({ text, direction = 1 }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const x = useTransform(scrollYProgress, [0, 1], [`${direction * 6}%`, `${direction * -6}%`]);
-  return (
-    <div
-      ref={ref}
-      style={{
-        width: "100%",
-        overflow: "hidden",
-        padding: "4px 0",
-        position: "relative",
-      }}
-    >
-      <div style={{
-        position: "absolute", left: 0, top: 0, bottom: 0, width: "8%",
-        background: "linear-gradient(to right, #06060A, transparent)",
-        zIndex: 1, pointerEvents: "none",
-      }} />
-      <div style={{
-        position: "absolute", right: 0, top: 0, bottom: 0, width: "8%",
-        background: "linear-gradient(to left, #06060A, transparent)",
-        zIndex: 1, pointerEvents: "none",
-      }} />
-      <motion.div
-        style={{
-          x,
-          display: "flex",
-          gap: "clamp(24px, 4vw, 64px)",
-          whiteSpace: "nowrap",
-          width: "max-content",
-        }}
-      >
-        {[...Array(6)].map((_, i) => (
-          <span
-            key={i}
-            style={{
-              fontFamily: "'Clash Display', sans-serif",
-              fontSize: "clamp(28px, 6vw, 88px)",
-              fontWeight: 700,
-              color: "transparent",
-              WebkitTextStroke: "1px rgba(255,255,255,0.06)",
-              letterSpacing: "-1px",
-              userSelect: "none",
-              flexShrink: 0,
-            }}
-          >
-            {text}
-          </span>
-        ))}
-      </motion.div>
-    </div>
-  );
-}
-
 function CinematicCard({ children, index, style = {} }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
@@ -424,72 +369,6 @@ function CinematicCard({ children, index, style = {} }) {
       {children}
     </motion.div>
   );
-}
-
-function DrawLine({ delay = 0 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
-  return (
-    <div ref={ref} style={{ height: 1, background: "rgba(255,255,255,0.04)", marginBottom: 80, overflow: "hidden" }}>
-      <motion.div
-        initial={{ scaleX: 0, originX: 0 }}
-        animate={isInView ? { scaleX: 1 } : {}}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay }}
-        style={{ height: "100%", background: "rgba(255,255,255,0.04)", transformOrigin: "left" }}
-      />
-    </div>
-  );
-}
-
-function SectionHeadline({ words, delay = 0 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <div ref={ref} style={{ display: "flex", flexWrap: "wrap", gap: "0.3em", marginBottom: 36, alignItems: "baseline" }}>
-      {words.map((word, i) => (
-        <span key={i} style={{ overflow: "hidden", display: "inline-block" }}>
-          <motion.span
-            style={{
-              display: "inline-block",
-              fontFamily: "'Clash Display', sans-serif",
-              fontSize: "clamp(28px, 4.5vw, 56px)",
-              fontWeight: 700,
-              letterSpacing: "-1px",
-              color: i % 2 === 0 ? "rgba(255,255,255,0.72)" : "rgba(20,184,166,0.55)",
-            }}
-            initial={{ y: "110%", opacity: 0, skewY: 6 }}
-            animate={isInView ? { y: "0%", opacity: 1, skewY: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: delay + i * 0.08 }}
-          >
-            {word}
-          </motion.span>
-        </span>
-      ))}
-    </div>
-  );
-}
-
-/* ══════════════════════════════════════════
-   COUNTER ANIMATION
-══════════════════════════════════════════ */
-function CountUp({ target, suffix = "", duration = 1800 }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
-  useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const num = parseInt(target);
-    const step = Math.ceil(duration / num);
-    const timer = setInterval(() => {
-      start += 1;
-      setCount(start);
-      if (start >= num) clearInterval(timer);
-    }, step);
-    return () => clearInterval(timer);
-  }, [isInView, target, duration]);
-  return <span ref={ref}>{count}{suffix}</span>;
 }
 
 /* ══════════════════════════════════════════
@@ -529,140 +408,21 @@ function MarqueeRow({ items, reverse = false, speed = 28 }) {
 }
 
 /* ══════════════════════════════════════════
-   PROJECT CARD
-══════════════════════════════════════════ */
-const FEATURED = [
-  { name: "ShopFlow",      desc: "Full-stack e-commerce platform with cart, payments, and admin dashboard.", tags: ["React","Node.js","MongoDB"],     color: "#14B8A6", year: "2024" },
-  { name: "TaskBoard Pro", desc: "Real-time kanban board with drag-and-drop, team auth, and REST API.",      tags: ["React","Express","Socket.io"],    color: "#A78BFA", year: "2024" },
-  { name: "DevMetrics",    desc: "Developer analytics dashboard aggregating GitHub, WakaTime, and CI data.", tags: ["Next.js","MongoDB","Chart.js"],   color: "#F78C6C", year: "2023" },
-];
-
-function ProjectCard({ name, desc, tags, color, year, index }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <CinematicCard index={index}>
-      <motion.div
-        onHoverStart={() => setHov(true)}
-        onHoverEnd={() => setHov(false)}
-        data-hover
-        style={{
-          padding: "26px 22px", borderRadius: 14, position: "relative", overflow: "hidden", cursor: "default",
-          border: `1px solid ${hov ? color + "42" : "rgba(255,255,255,0.07)"}`,
-          background: hov ? `${color}07` : "rgba(255,255,255,0.02)",
-          transition: "border-color 0.35s, background 0.35s",
-        }}
-      >
-        <motion.div
-          animate={{ opacity: hov ? 1 : 0, scale: hov ? 1 : 0.5 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            position: "absolute", top: -70, right: -70, width: 180, height: 180, borderRadius: "50%",
-            background: `radial-gradient(circle, ${color}1A 0%, transparent 70%)`,
-            filter: "blur(28px)", pointerEvents: "none",
-          }}
-        />
-        <div style={{
-          position: "absolute", right: 18, bottom: 12,
-          fontFamily: "'Clash Display', sans-serif", fontSize: 84, fontWeight: 700,
-          color: hov ? `${color}15` : "rgba(255,255,255,0.022)",
-          lineHeight: 1, transition: "color 0.45s", userSelect: "none",
-        }}>
-          {String(index + 1).padStart(2, "0")}
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, color, letterSpacing: 2, textTransform: "uppercase" }}>{year}</span>
-          <motion.span animate={{ x: hov ? 0 : -8, opacity: hov ? 1 : 0 }} transition={{ duration: 0.22 }}
-            style={{ fontFamily: "'DM Mono', monospace", fontSize: 14, color }}>↗</motion.span>
-        </div>
-        <h3 style={{
-          fontFamily: "'Clash Display', sans-serif", fontSize: 19, fontWeight: 600, letterSpacing: "-0.3px", marginBottom: 10,
-          color: hov ? "rgba(255,255,255,0.96)" : "rgba(255,255,255,0.74)", transition: "color 0.3s",
-        }}>{name}</h3>
-        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.32)", lineHeight: 1.75, fontWeight: 300, marginBottom: 18 }}>{desc}</p>
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-          {tags.map(t => (
-            <span key={t} style={{
-              fontFamily: "'DM Mono', monospace", fontSize: 9.5, color, letterSpacing: 1.2,
-              padding: "3px 8px", borderRadius: 4, background: `${color}10`, border: `1px solid ${color}22`, textTransform: "uppercase",
-            }}>{t}</span>
-          ))}
-        </div>
-      </motion.div>
-    </CinematicCard>
-  );
-}
-
-/* ══════════════════════════════════════════
-   SERVICE CARD
-══════════════════════════════════════════ */
-const SERVICES = [
-  { emoji: "🖥️", title: "Full Stack Apps",    desc: "End-to-end MERN applications built to scale with clean architecture." },
-  { emoji: "🔌", title: "REST API Design",     desc: "Clean, documented, and secure API architecture following best practices." },
-  { emoji: "⚡", title: "Performance Tuning",  desc: "90+ Lighthouse scores with ultra-fast optimized performance." },
-  { emoji: "🚀", title: "Cloud Deployment",    desc: "Vercel, Railway, and Docker-based CI/CD pipelines for seamless deploys." },
-];
-
-function ServiceCard({ emoji, title, desc, index }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <CinematicCard index={index}>
-      <motion.div
-        onHoverStart={() => setHov(true)}
-        onHoverEnd={() => setHov(false)}
-        data-hover
-        style={{
-          padding: "26px 20px", borderRadius: 12, cursor: "default",
-          border: `1px solid ${hov ? "rgba(20,184,166,0.25)" : "rgba(255,255,255,0.06)"}`,
-          background: hov ? "rgba(20,184,166,0.05)" : "rgba(255,255,255,0.02)",
-          transition: "border-color 0.3s, background 0.3s",
-        }}
-      >
-        <motion.div
-          animate={{ scale: hov ? 1.15 : 1, rotate: hov ? 6 : 0, y: hov ? -3 : 0 }}
-          transition={{ duration: 0.35, ease: [0.22,1,0.36,1] }}
-          style={{ fontSize: 28, marginBottom: 16, display: "inline-block" }}
-        >{emoji}</motion.div>
-        <h4 style={{ fontFamily: "'Clash Display', sans-serif", fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.82)", marginBottom: 8, letterSpacing: "-0.2px" }}>{title}</h4>
-        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, color: "rgba(255,255,255,0.3)", lineHeight: 1.75, fontWeight: 300 }}>{desc}</p>
-      </motion.div>
-    </CinematicCard>
-  );
-}
-
-/* ══════════════════════════════════════════
    FREELANCE OUTRO
 ══════════════════════════════════════════ */
 function FreelanceOutro() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-
-  const xA = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
-  const xB = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.3]);
 
   return (
-    <div
-      ref={ref}
-      style={{
-        width: "100%",
-        overflow: "hidden",
-        paddingBottom: 120,
-        position: "relative",
-      }}
-    >
-      {/* Centered CTA */}
+    <div ref={ref} style={{ width: "100%", overflow: "hidden", paddingBottom: 120, position: "relative" }}>
       <motion.div
         initial={{ opacity: 0, y: 24, scale: 0.95 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 20,
-          marginTop: "clamp(28px, 4vw, 56px)",
-          padding: "0 16px",
+          display: "flex", flexDirection: "column", alignItems: "center", gap: 20,
+          marginTop: "clamp(28px, 4vw, 56px)", padding: "0 16px",
         }}
       >
         <div style={{
@@ -685,15 +445,11 @@ function FreelanceOutro() {
           fontFamily: "'DM Sans', sans-serif",
           fontSize: "clamp(13px, 2vw, 16px)",
           color: "rgba(255,255,255,0.22)",
-          textAlign: "center",
-          maxWidth: 420,
-          lineHeight: 1.7,
-          fontWeight: 300,
+          textAlign: "center", maxWidth: 420, lineHeight: 1.7, fontWeight: 300,
         }}>
           Have a project in mind? Let's talk and turn your idea into a production-ready product.
         </p>
 
-        {/* ── React Router Link to /contact ── */}
         <Link to="/contact" data-hover style={{ textDecoration: "none" }}>
           <motion.div
             whileHover={{ scale: 1.04, boxShadow: "0 0 32px rgba(20,184,166,0.22)" }}
@@ -706,8 +462,7 @@ function FreelanceOutro() {
               border: "1px solid rgba(20,184,166,0.3)",
               fontFamily: "'DM Mono', monospace",
               fontSize: "clamp(11px, 1.5vw, 13px)",
-              color: "#14B8A6", letterSpacing: 2,
-              textTransform: "uppercase",
+              color: "#14B8A6", letterSpacing: 2, textTransform: "uppercase",
             }}
           >
             Get in touch ↗
@@ -770,23 +525,16 @@ export default function Home() {
         .hero-right { display: flex; flex-direction: column; gap: 28px; align-items: stretch; }
         .orbit-wrapper { display: flex; justify-content: center; }
         .section-wrap { max-width: 1300px; margin: 0 auto; padding: 0 6% 40px; position: relative; z-index: 2; }
-        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
         .stats-row-hero { display: flex; gap: 10px; flex-wrap: wrap; }
         .stack-row { display: flex; gap: 8px; flex-wrap: wrap; }
 
         @media (max-width: 900px) {
           .hero-grid { grid-template-columns: 1fr; min-height: unset; padding-top: 110px; padding-bottom: 60px; gap: 40px; }
-          .projects-grid { grid-template-columns: 1fr 1fr; }
-          .services-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 600px) {
           .hero-grid { padding-top: 90px; padding-bottom: 48px; gap: 32px; }
-          .projects-grid { grid-template-columns: 1fr; }
-          .services-grid { grid-template-columns: 1fr 1fr; }
           .orbit-wrapper { display: none; }
         }
-        @media (max-width: 380px) { .services-grid { grid-template-columns: 1fr; } }
       `}</style>
 
       {/* ── Scroll progress bar ── */}
@@ -861,7 +609,6 @@ export default function Home() {
             and secure Node.js back-ends. Based in Dhaka, Bangladesh, open to remote work worldwide.
           </motion.p>
 
-          {/* ── Stats row: "5★ Quality" removed ── */}
           <motion.div variants={it} className="stats-row-hero" style={{ marginBottom: 32 }}>
             {[["10+","Projects"],["2+","Years Exp"],["10+","REST APIs"]].map(([v,l], i) => (
               <StatCard key={l} value={v} label={l} i={i} />

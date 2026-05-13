@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FaFeatherAlt, FaRss, FaBookOpen, FaClock, FaTag } from "react-icons/fa";
+import { FaRss, FaBookOpen, FaClock, FaTag } from "react-icons/fa";
 
 /* ─── Cursor spotlight ─── */
 function CursorSpotlight() {
@@ -70,10 +70,10 @@ function SectionLabel({ children }) {
 
 /* ─── Planned topic card ─── */
 const PLANNED_TOPICS = [
-  { icon: FaBookOpen, label: "Deep Dives",    desc: "In-depth explorations of frameworks, tools, and concepts I'm actively learning.", color: "#14B8A6", tag: "technical" },
-  { icon: FaClock,    label: "Dev Diaries",   desc: "Behind-the-scenes look at projects — decisions made, mistakes learned, lessons kept.", color: "#A78BFA", tag: "process"   },
-  { icon: FaTag,      label: "Quick Notes",   desc: "Short-form thoughts, tips, and discoveries that don't need a full essay.", color: "#F78C6C", tag: "misc"      },
-  { icon: FaRss,      label: "Opinion Pieces",desc: "Takes on design trends, developer culture, and things I find genuinely interesting.", color: "#4ADE80", tag: "opinion"   },
+  { icon: FaBookOpen, label: "Deep Dives",     desc: "In-depth explorations of frameworks, tools, and concepts I'm actively learning.", color: "#14B8A6", tag: "technical" },
+  { icon: FaClock,    label: "Dev Diaries",    desc: "Behind-the-scenes look at projects — decisions made, mistakes learned, lessons kept.", color: "#A78BFA", tag: "process"   },
+  { icon: FaTag,      label: "Quick Notes",    desc: "Short-form thoughts, tips, and discoveries that don't need a full essay.", color: "#F78C6C", tag: "misc"      },
+  { icon: FaRss,      label: "Opinion Pieces", desc: "Takes on design trends, developer culture, and things I find genuinely interesting.", color: "#4ADE80", tag: "opinion"   },
 ];
 
 function TopicCard({ icon: Icon, label, desc, color, tag, index }) {
@@ -128,7 +128,7 @@ function TopicCard({ icon: Icon, label, desc, color, tag, index }) {
 }
 
 /* ─── Ghost / skeleton post card ─── */
-function GhostCard({ delay, wide = false }) {
+function GhostCard({ delay }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -138,7 +138,6 @@ function GhostCard({ delay, wide = false }) {
         padding: "26px 24px", borderRadius: 12,
         border: "1px solid rgba(255,255,255,0.05)",
         background: "rgba(255,255,255,0.015)",
-        gridColumn: wide ? "span 2" : "span 1",
         position: "relative", overflow: "hidden",
       }}
     >
@@ -155,8 +154,8 @@ function GhostCard({ delay, wide = false }) {
       {/* Tag placeholder */}
       <div style={{ width: 52, height: 14, borderRadius: 3, background: "rgba(255,255,255,0.05)", marginBottom: 18 }} />
       {/* Title placeholder lines */}
-      <div style={{ width: wide ? "55%" : "80%", height: 14, borderRadius: 3, background: "rgba(255,255,255,0.06)", marginBottom: 10 }} />
-      <div style={{ width: wide ? "40%" : "60%", height: 14, borderRadius: 3, background: "rgba(255,255,255,0.04)", marginBottom: 20 }} />
+      <div style={{ width: "80%", height: 14, borderRadius: 3, background: "rgba(255,255,255,0.06)", marginBottom: 10 }} />
+      <div style={{ width: "60%", height: 14, borderRadius: 3, background: "rgba(255,255,255,0.04)", marginBottom: 20 }} />
       {/* Body lines */}
       {[100, 88, 74].map((w, i) => (
         <div key={i} style={{ width: `${w}%`, height: 10, borderRadius: 3, background: "rgba(255,255,255,0.03)", marginBottom: 8 }} />
@@ -179,104 +178,16 @@ function GhostCard({ delay, wide = false }) {
   );
 }
 
-/* ─── Notify form ─── */
-function NotifyForm() {
-  const [email, setEmail] = useState("");
-  const [focused, setFocused] = useState(false);
-  const [done, setDone] = useState(false);
-  const [sending, setSending] = useState(false);
-
-  const handleSubmit = () => {
-    if (!email || !email.includes("@")) return;
-    setSending(true);
-    setTimeout(() => { setSending(false); setDone(true); }, 1400);
-  };
-
-  if (done) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        style={{
-          display: "flex", alignItems: "center", gap: 14,
-          padding: "16px 20px", borderRadius: 10,
-          border: "1px solid rgba(74,222,128,0.2)", background: "rgba(74,222,128,0.05)",
-        }}
-      >
-        <div style={{
-          width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-          background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.25)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-        }}>
-          <FaFeatherAlt size={13} style={{ color: "#4ADE80" }} />
-        </div>
-        <div>
-          <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "#4ADE80", letterSpacing: 1 }}>You're on the list.</p>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.3)", marginTop: 3, fontWeight: 300 }}>I'll ping you when the first post drops.</p>
-        </div>
-      </motion.div>
-    );
-  }
-
-  return (
-    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-      <input
-        type="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        onKeyDown={e => e.key === "Enter" && handleSubmit()}
-        placeholder="your@email.com"
-        style={{
-          flex: 1, minWidth: 200,
-          background: focused ? "rgba(20,184,166,0.04)" : "rgba(255,255,255,0.025)",
-          border: `1px solid ${focused ? "rgba(20,184,166,0.45)" : "rgba(255,255,255,0.08)"}`,
-          borderRadius: 8, padding: "11px 14px",
-          color: "rgba(255,255,255,0.82)", fontSize: 13,
-          fontFamily: "'DM Sans', sans-serif", outline: "none",
-          transition: "border-color 0.3s, background 0.3s",
-          cursor: "none", caretColor: "#14B8A6",
-        }}
-      />
-      <motion.button
-        data-hover
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        onClick={handleSubmit}
-        disabled={sending}
-        style={{
-          padding: "11px 22px", borderRadius: 8, border: "none",
-          background: sending ? "rgba(20,184,166,0.5)" : "#14B8A6",
-          color: "#06060A", fontFamily: "'DM Mono', monospace",
-          fontSize: 11.5, fontWeight: 600, letterSpacing: 0.5,
-          cursor: "none", transition: "background 0.3s",
-          display: "flex", alignItems: "center", gap: 7, whiteSpace: "nowrap",
-        }}
-      >
-        {sending ? (
-          <>
-            <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-              style={{ width: 11, height: 11, border: "2px solid #06060A", borderTopColor: "transparent", borderRadius: "50%" }} />
-            subscribing...
-          </>
-        ) : "$ notify --me"}
-      </motion.button>
-    </div>
-  );
-}
-
 /* ════════════════════════════
    Main Journal Page
 ════════════════════════════ */
 export default function Journal() {
   const mouseXN = useMotionValue(0.5);
   const mouseYN = useMotionValue(0.5);
-  const glowX = useSpring(useTransform(mouseXN, [0,1], [-50,50]), { stiffness: 40, damping: 18 });
-  const glowY = useSpring(useTransform(mouseYN, [0,1], [-50,50]), { stiffness: 40, damping: 18 });
-  const tiltX = useSpring(useTransform(mouseYN, [0,1], [5,-5]), { stiffness: 50, damping: 18 });
-  const tiltY = useSpring(useTransform(mouseXN, [0,1], [-5,5]), { stiffness: 50, damping: 18 });
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const glowX = useSpring(useTransform(mouseXN, [0, 1], [-50, 50]), { stiffness: 40, damping: 18 });
+  const glowY = useSpring(useTransform(mouseYN, [0, 1], [-50, 50]), { stiffness: 40, damping: 18 });
+  const tiltX = useSpring(useTransform(mouseYN, [0, 1], [5, -5]), { stiffness: 50, damping: 18 });
+  const tiltY = useSpring(useTransform(mouseXN, [0, 1], [-5, 5]), { stiffness: 50, damping: 18 });
 
   useEffect(() => {
     const fn = (e) => {
@@ -304,18 +215,14 @@ export default function Journal() {
         .scanlines { position: fixed; inset: 0; pointer-events: none; z-index: 1;
           background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px); }
 
-        .nav-links        { display: flex; gap: 6px; }
-        .mobile-menu-btn  { display: none !important; }
-        .topics-grid      { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-        .ghost-grid       { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+        .ghost-grid  { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
 
         @media (max-width: 1060px) { .topics-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 960px)  { .ghost-grid  { grid-template-columns: 1fr; } }
         @media (max-width: 640px)  {
-          .topics-grid     { grid-template-columns: 1fr; }
-          .ghost-grid      { grid-template-columns: 1fr; }
-          .nav-links       { display: none !important; }
-          .mobile-menu-btn { display: flex !important; }
+          .topics-grid { grid-template-columns: 1fr; }
+          .ghost-grid  { grid-template-columns: 1fr; }
         }
       `}</style>
 
@@ -345,9 +252,6 @@ export default function Journal() {
           <rect width="100%" height="100%" fill="url(#g)" />
         </svg>
       </motion.div>
-
- 
-      
 
       {/* ── Page Content ── */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "100px 6% 100px", position: "relative", zIndex: 2 }}>
@@ -410,13 +314,10 @@ export default function Journal() {
         <div style={{ marginBottom: 72 }}>
           <SectionLabel>02 / reserved space</SectionLabel>
           <div className="ghost-grid">
-            <GhostCard delay={0.1} wide={false} />
-            <GhostCard delay={0.2} wide={false} />
-
+            <GhostCard delay={0.1} />
+            <GhostCard delay={0.2} />
           </div>
         </div>
-
-   
 
       </div>
 
@@ -432,7 +333,7 @@ export default function Journal() {
       >
         <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>© 2026 Fahim Mubasshir Sajid</span>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <motion.div animate={{ scale: [1,1.5,1], opacity: [1,0.4,1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ADE80" }} />
+          <motion.div animate={{ scale: [1, 1.5, 1], opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ADE80" }} />
           <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>writing soon</span>
         </div>
       </motion.div>

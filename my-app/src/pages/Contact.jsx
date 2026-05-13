@@ -157,7 +157,7 @@ function InfoCard({ icon: Icon, label, value, href, color = "#14B8A6", delay }) 
 
 /* ─── Socials data ─── */
 const SOCIALS = [
-  { icon: FaGithub,    label: "GitHub",    handle: "@fahimsajid44",         url: "https://github.com/fahimsajid44",                      desc: "Open-source projects & contributions", color: "#e0e0e0" },
+  { icon: FaGithub,    label: "GitHub",    handle: "@fahimsajid44",         url: "https://github.com/fahimsajid44",                      desc: "Open-source projects & contributions",  color: "#e0e0e0" },
   { icon: FaLinkedin,  label: "LinkedIn",  handle: "Fahim Mubasshir Sajid", url: "https://www.linkedin.com/in/fahim-mubasshir-sajid",     desc: "Professional network & career updates", color: "#0A66C2" },
   { icon: FaInstagram, label: "Instagram", handle: "@fahim_sajid404",       url: "https://www.instagram.com/fahim_sajid404/",             desc: "Behind-the-scenes & dev life",          color: "#E1306C" },
 ];
@@ -218,18 +218,18 @@ function SocialCard({ icon: Icon, label, handle, url, desc, color, index }) {
   );
 }
 
-/* ─── Availability full-width ─── */
+/* ─── Availability section ─── */
 function AvailabilitySection() {
   return (
     <div className="availability-grid">
       {/* Status */}
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.7, ease: [0.22,1,0.36,1] }}
+        transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         style={{ padding: "28px", borderRadius: 12, border: "1px solid rgba(74,222,128,0.2)", background: "rgba(74,222,128,0.04)" }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-          <motion.div animate={{ scale: [1,1.5,1], opacity: [1,0.4,1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: 9, height: 9, borderRadius: "50%", background: "#4ADE80", flexShrink: 0 }} />
+          <motion.div animate={{ scale: [1, 1.5, 1], opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: 9, height: 9, borderRadius: "50%", background: "#4ADE80", flexShrink: 0 }} />
           <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "#4ADE80", letterSpacing: 1.5, textTransform: "uppercase" }}>Open to Opportunities</span>
         </div>
         <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.38)", lineHeight: 1.85, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>
@@ -240,7 +240,7 @@ function AvailabilitySection() {
       {/* Response time */}
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.7, ease: [0.22,1,0.36,1] }}
+        transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         style={{ padding: "28px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.02)" }}
       >
         <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: 2, textTransform: "uppercase", marginBottom: 20 }}>Response Time</p>
@@ -257,7 +257,7 @@ function AvailabilitySection() {
             <div style={{ height: 3, background: "rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" }}>
               <motion.div
                 initial={{ width: 0 }} animate={{ width: `${bar * 100}%` }}
-                transition={{ delay: 0.6 + i * 0.12, duration: 0.85, ease: [0.22,1,0.36,1] }}
+                transition={{ delay: 0.6 + i * 0.12, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
                 style={{ height: "100%", borderRadius: 2, background: color, opacity: 0.75 }}
               />
             </div>
@@ -268,7 +268,7 @@ function AvailabilitySection() {
       {/* Timezone */}
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.7, ease: [0.22,1,0.36,1] }}
+        transition={{ delay: 0.5, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         style={{ padding: "28px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.02)" }}
       >
         <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: 2, textTransform: "uppercase", marginBottom: 14 }}>Timezone</p>
@@ -288,11 +288,10 @@ function AvailabilitySection() {
 export default function Contact() {
   const mouseXN = useMotionValue(0.5);
   const mouseYN = useMotionValue(0.5);
-  const glowX = useSpring(useTransform(mouseXN, [0,1], [-50,50]), { stiffness: 40, damping: 18 });
-  const glowY = useSpring(useTransform(mouseYN, [0,1], [-50,50]), { stiffness: 40, damping: 18 });
-  const tiltX = useSpring(useTransform(mouseYN, [0,1], [5,-5]), { stiffness: 50, damping: 18 });
-  const tiltY = useSpring(useTransform(mouseXN, [0,1], [-5,5]), { stiffness: 50, damping: 18 });
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const glowX = useSpring(useTransform(mouseXN, [0, 1], [-50, 50]), { stiffness: 40, damping: 18 });
+  const glowY = useSpring(useTransform(mouseYN, [0, 1], [-50, 50]), { stiffness: 40, damping: 18 });
+  const tiltX = useSpring(useTransform(mouseYN, [0, 1], [5, -5]), { stiffness: 50, damping: 18 });
+  const tiltY = useSpring(useTransform(mouseXN, [0, 1], [-5, 5]), { stiffness: 50, damping: 18 });
 
   useEffect(() => {
     const fn = (e) => { mouseXN.set(e.clientX / window.innerWidth); mouseYN.set(e.clientY / window.innerHeight); };
@@ -312,11 +311,8 @@ export default function Contact() {
         .noise { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 200px; }
         .scanlines { position: fixed; inset: 0; pointer-events: none; z-index: 1; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px); }
 
-        .nav-links { display: flex; gap: 6px; }
-        .mobile-menu-btn { display: none !important; }
-
-        .info-grid        { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-        .social-grid      { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .info-grid         { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .social-grid       { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         .availability-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 
         @media (max-width: 960px) {
@@ -328,8 +324,6 @@ export default function Contact() {
           .info-grid         { grid-template-columns: 1fr; }
           .social-grid       { grid-template-columns: 1fr; }
           .availability-grid { grid-template-columns: 1fr; }
-          .nav-links         { display: none !important; }
-          .mobile-menu-btn   { display: flex !important; }
         }
       `}</style>
 
@@ -352,32 +346,6 @@ export default function Contact() {
         </svg>
       </motion.div>
 
-      
-
-      {/* Mobile menu dropdown */}
-      {mobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          style={{
-            position: "fixed", top: 54, left: 0, right: 0, zIndex: 49,
-            background: "rgba(6,6,10,0.97)", backdropFilter: "blur(20px)",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
-            padding: "16px 6%", display: "flex", flexDirection: "column", gap: 2,
-          }}
-        >
-          {[["home()", "#"], ["about()", "#"], ["projects()", "#"], ["contact()", "#contact"]].map(([label, href]) => (
-            <a key={label} href={href} onClick={() => setMobileMenuOpen(false)}
-              style={{
-                fontFamily: "'DM Mono', monospace", fontSize: 12,
-                color: label === "contact()" ? "#14B8A6" : "rgba(255,255,255,0.45)",
-                textDecoration: "none", padding: "11px 0",
-                borderBottom: "1px solid rgba(255,255,255,0.04)",
-              }}
-            >{label}</a>
-          ))}
-        </motion.div>
-      )}
-
       {/* ── Page content ── */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "100px 6% 90px", position: "relative", zIndex: 2 }}>
 
@@ -395,7 +363,7 @@ export default function Contact() {
           }}>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "#14B8A6" }}>~/contact</span>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.22)" }}>--reach-out</span>
-            <motion.span animate={{ opacity: [1,0] }} transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }} style={{ color: "#14B8A6", fontFamily: "'DM Mono', monospace", fontSize: 11 }}>▋</motion.span>
+            <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }} style={{ color: "#14B8A6", fontFamily: "'DM Mono', monospace", fontSize: 11 }}>▋</motion.span>
           </div>
           <h1 style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 700, letterSpacing: "-3px", lineHeight: 0.94, marginBottom: 18 }}>
             Let's <span style={{ color: "#14B8A6" }}>Connect</span>
@@ -412,7 +380,7 @@ export default function Contact() {
           <div className="info-grid">
             <InfoCard icon={FaEnvelope}     label="Email"            value="fahim.mubasshir.sajid@gmail.com" href="mailto:fahim.mubasshir.sajid@gmail.com" color="#14B8A6" delay={0.1} />
             <InfoCard icon={FaPhone}        label="Phone / WhatsApp" value="+880 1731-047260"                                                               color="#4ADE80" delay={0.2} />
-            <InfoCard icon={FaMapMarkerAlt} label="Location"         value="Sylhet, Bangladesh"                                                          color="#F78C6C" delay={0.3} />
+            <InfoCard icon={FaMapMarkerAlt} label="Location"         value="Sylhet, Bangladesh"                                                             color="#F78C6C" delay={0.3} />
           </div>
         </div>
 
@@ -444,7 +412,7 @@ export default function Contact() {
       >
         <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>© 2026 Fahim Mubasshir Sajid</span>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <motion.div animate={{ scale: [1,1.5,1], opacity: [1,0.4,1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ADE80" }} />
+          <motion.div animate={{ scale: [1, 1.5, 1], opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ADE80" }} />
           <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.2)" }}>open to opportunities</span>
         </div>
       </motion.div>
