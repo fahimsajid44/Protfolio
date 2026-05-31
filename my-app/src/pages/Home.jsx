@@ -18,7 +18,7 @@ function CursorSpotlight() {
     const fn = (e) => { x.set(e.clientX); y.set(e.clientY); };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, [x, y]);
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 0,
@@ -46,7 +46,7 @@ function CursorDot() {
       window.removeEventListener("mouseover", ov);
       window.removeEventListener("mouseout", ou);
     };
-  }, []);
+  }, [x, y]);
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 9999,
@@ -341,36 +341,6 @@ function ParallaxDrift({ speed = 0.15, children, style = {} }) {
   );
 }
 
-function CinematicCard({ children, index, style = {} }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-
-  const handleMouse = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    setTilt({ x: ((e.clientY - r.top) / r.height - 0.5) * -9, y: ((e.clientX - r.left) / r.width - 0.5) * 9 });
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
-      initial={{ opacity: 0, y: 70, scale: 0.93, filter: "blur(12px)" }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" } : {}}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: index * 0.13 }}
-      style={{
-        ...style,
-        rotateX: tilt.x, rotateY: tilt.y,
-        transformPerspective: 900, transformStyle: "preserve-3d",
-        transition: "rotateX 0.35s ease, rotateY 0.35s ease",
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
 /* ══════════════════════════════════════════
    SKILLS MARQUEE
 ══════════════════════════════════════════ */
@@ -491,10 +461,10 @@ export default function Home() {
     const fn = (e) => { mouseXN.set(e.clientX / window.innerWidth); mouseYN.set(e.clientY / window.innerHeight); };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, [mouseXN, mouseYN]);
 
-  const c  = { hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } } };
-  const it = {
+  const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } } };
+  const itemVariants = {
     hidden:  { opacity: 0, y: 30, filter: "blur(8px)" },
     visible: { opacity: 1, y: 0,  filter: "blur(0px)", transition: { duration: 0.75, ease: [0.22,1,0.36,1] } },
   };
@@ -574,9 +544,9 @@ export default function Home() {
 
       {/* ═══════════════════ HERO ═══════════════════ */}
       <div className="hero-grid" style={{ position: "relative", zIndex: 2 }}>
-        <motion.div variants={c} initial="hidden" animate="visible">
+        <motion.div variants={containerVariants} initial="hidden" animate="visible">
 
-          <motion.div variants={it} style={{ marginBottom: 24 }}>
+          <motion.div variants={itemVariants} style={{ marginBottom: 24 }}>
             <div style={{
               display: "inline-flex", alignItems: "center", gap: 10,
               padding: "7px 14px", borderRadius: 6,
@@ -589,33 +559,33 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <motion.p variants={it} style={{ fontSize: 12, color: "rgba(255,255,255,0.28)", letterSpacing: 3, textTransform: "uppercase", fontFamily: "'DM Mono', monospace", marginBottom: 10 }}>
+          <motion.p variants={itemVariants} style={{ fontSize: 12, color: "rgba(255,255,255,0.28)", letterSpacing: 3, textTransform: "uppercase", fontFamily: "'DM Mono', monospace", marginBottom: 10 }}>
             Hello, I'm
           </motion.p>
 
-          <motion.h1 variants={it} style={{ fontSize: "clamp(36px, 6vw, 82px)", lineHeight: 0.94, fontWeight: 700, letterSpacing: "0px", marginBottom: 18 }}>
+          <motion.h1 variants={itemVariants} style={{ fontSize: "clamp(36px, 6vw, 82px)", lineHeight: 0.94, fontWeight: 700, letterSpacing: "0px", marginBottom: 18 }}>
             Fahim<br />Mubasshir<br />Sajid
           </motion.h1>
 
-          <motion.div variants={it} style={{ fontSize: "clamp(15px, 2.2vw, 22px)", fontWeight: 500, marginBottom: 24, letterSpacing: "-0.3px", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+          <motion.div variants={itemVariants} style={{ fontSize: "clamp(15px, 2.2vw, 22px)", fontWeight: 500, marginBottom: 24, letterSpacing: "-0.3px", display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
             <span style={{ color: "rgba(255,255,255,0.22)" }}>{"<"}</span>
             <TypingRole />
             <span style={{ color: "rgba(255,255,255,0.22)" }}>{"/>"}</span>
           </motion.div>
 
-          <motion.p variants={it} style={{ color: "rgba(255,255,255,0.42)", fontSize: "clamp(13px, 1.5vw, 15px)", lineHeight: 1.9, maxWidth: 520, marginBottom: 32, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>
+          <motion.p variants={itemVariants} style={{ color: "rgba(255,255,255,0.42)", fontSize: "clamp(13px, 1.5vw, 15px)", lineHeight: 1.9, maxWidth: 520, marginBottom: 32, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>
             I build scalable, production-ready web applications using the complete MERN stack —
             from pixel-perfect React UIs and RESTful APIs to optimised MongoDB schemas
             and secure Node.js back-ends. Based in Dhaka, Bangladesh, open to remote work worldwide.
           </motion.p>
 
-          <motion.div variants={it} className="stats-row-hero" style={{ marginBottom: 32 }}>
+          <motion.div variants={itemVariants} className="stats-row-hero" style={{ marginBottom: 32 }}>
             {[["10+","Projects"],["2+","Years Exp"],["10+","REST APIs"]].map(([v,l], i) => (
               <StatCard key={l} value={v} label={l} i={i} />
             ))}
           </motion.div>
 
-          <motion.div variants={it} style={{ marginBottom: 16 }}>
+          <motion.div variants={itemVariants} style={{ marginBottom: 16 }}>
             <p style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", letterSpacing: 3, textTransform: "uppercase", fontFamily: "'DM Mono', monospace", marginBottom: 12 }}>Core Stack</p>
             <div className="stack-row">
               {STACK.map((s, i) => <StackBadge key={s.label} {...s} index={i} />)}

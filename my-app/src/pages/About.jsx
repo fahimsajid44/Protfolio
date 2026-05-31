@@ -10,11 +10,14 @@ function CursorSpotlight() {
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 60, damping: 18 });
   const sy = useSpring(y, { stiffness: 60, damping: 18 });
+
+  // ✅ Fix: x and y are stable MotionValue refs — safe to include in deps
   useEffect(() => {
     const fn = (e) => { x.set(e.clientX); y.set(e.clientY); };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, [x, y]);
+
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 0,
@@ -33,6 +36,8 @@ function CursorDot() {
   const sx = useSpring(x, { stiffness: 500, damping: 32 });
   const sy = useSpring(y, { stiffness: 500, damping: 32 });
   const [big, setBig] = useState(false);
+
+  // ✅ Fix: x and y are stable MotionValue refs — safe to include in deps
   useEffect(() => {
     const mv = (e) => { x.set(e.clientX); y.set(e.clientY); };
     const ov = (e) => { if (e.target.closest("button,a,[data-hover]")) setBig(true); };
@@ -45,7 +50,8 @@ function CursorDot() {
       window.removeEventListener("mouseover", ov);
       window.removeEventListener("mouseout", ou);
     };
-  }, []);
+  }, [x, y]);
+
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 9999,
@@ -172,7 +178,6 @@ function AvatarBlock() {
 
 /* ══════════════════════════════════════════
    02 — CORE VALUES
-   Card design mirrors SkillCategory style
 ══════════════════════════════════════════ */
 const VALUES = [
   {
@@ -216,7 +221,6 @@ function ValueCard({ icon, title, desc, color, index }) {
         position: "relative", overflow: "hidden",
       }}
     >
-      {/* Glow on hover */}
       <motion.div
         animate={{ opacity: hov ? 1 : 0, scale: hov ? 1 : 0.6 }}
         transition={{ duration: 0.4 }}
@@ -227,8 +231,6 @@ function ValueCard({ icon, title, desc, color, index }) {
           filter: "blur(24px)", pointerEvents: "none",
         }}
       />
-
-      {/* Icon — same badge style as SkillCategory */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{
           width: 36, height: 36, borderRadius: 8, flexShrink: 0,
@@ -246,14 +248,11 @@ function ValueCard({ icon, title, desc, color, index }) {
           transition: "color 0.3s",
         }}>{title}</span>
       </div>
-
-      {/* Thin accent line */}
       <div style={{
         height: 1,
         background: hov ? `linear-gradient(90deg, ${color}40, transparent)` : "rgba(255,255,255,0.04)",
         transition: "background 0.4s",
       }} />
-
       <p style={{
         fontSize: 12.5, color: "rgba(255,255,255,0.32)", lineHeight: 1.8,
         fontFamily: "'DM Sans', sans-serif", fontWeight: 300,
@@ -372,6 +371,7 @@ export default function About() {
   const tiltX = useSpring(useTransform(mouseYN, [0,1], [5,-5]), { stiffness: 50, damping: 18 });
   const tiltY = useSpring(useTransform(mouseXN, [0,1], [-5,5]), { stiffness: 50, damping: 18 });
 
+  // ✅ Fix: mouseXN and mouseYN are stable MotionValue refs — safe to include in deps
   useEffect(() => {
     const fn = (e) => {
       mouseXN.set(e.clientX / window.innerWidth);
@@ -379,7 +379,7 @@ export default function About() {
     };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, [mouseXN, mouseYN]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#06060A", color: "white", fontFamily: "'Clash Display', sans-serif", position: "relative", overflowX: "hidden", cursor: "none" }}>
@@ -410,6 +410,19 @@ export default function About() {
           background: rgba(20,184,166,0.05);
         }
 
+        .btn-pptx {
+          padding: 12px 24px; border-radius: 7px;
+          border: 1px solid rgba(209,68,36,0.25); background: rgba(209,68,36,0.05);
+          color: rgba(255,160,130,0.75); font-size: 12.5px; font-weight: 500;
+          cursor: none; font-family: 'DM Mono', monospace; letter-spacing: 0.5px;
+          transition: border-color 0.3s, color 0.3s, background 0.3s;
+          display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-pptx:hover {
+          border-color: rgba(209,68,36,0.55); color: #FF9472;
+          background: rgba(209,68,36,0.1);
+        }
+
         .noise {
           position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.025;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -424,7 +437,6 @@ export default function About() {
         ::-webkit-scrollbar-track { background: #06060A; }
         ::-webkit-scrollbar-thumb { background: rgba(20,184,166,0.3); border-radius: 2px; }
 
-        /* ── 01: identity ── */
         .identity-grid {
           display: grid;
           grid-template-columns: 300px 1fr;
@@ -433,14 +445,12 @@ export default function About() {
           align-items: start;
         }
 
-        /* ── 02: core values — 4 cols ── */
         .values-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 16px;
         }
 
-        /* ── 03: skills — 3 cols ── */
         .skills-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -452,7 +462,6 @@ export default function About() {
         }
         .cta-row button { flex: 1; min-width: 120px; }
 
-        /* ── Bio text ── */
         .bio-block { display: flex; flex-direction: column; }
 
         .bio-para {
@@ -463,7 +472,6 @@ export default function About() {
           font-weight: 300;
           padding: 16px 0;
           border-bottom: 1px solid rgba(255,255,255,0.04);
-          /* ── justified alignment ── */
           text-align: justify;
           text-justify: inter-word;
         }
@@ -473,7 +481,6 @@ export default function About() {
         .bio-highlight { color: rgba(255,255,255,0.88); font-weight: 500; }
         .bio-accent    { color: #14B8A6; font-weight: 500; }
 
-        /* ── Responsive ── */
         @media (max-width: 1100px) {
           .values-grid { grid-template-columns: repeat(2, 1fr); }
         }
@@ -550,7 +557,7 @@ export default function About() {
               style={{ color: "#14B8A6", fontFamily: "'DM Mono', monospace", fontSize: 11 }}
             >▋</motion.span>
           </div>
-          <h1 style={{ fontSize: "clamp(38px, 6vw, 78px)", fontWeight: 700, letterSpacing: "-3px", lineHeight: 0.94, marginBottom: 18 }}>
+          <h1 style={{ fontSize: "clamp(38px, 6vw, 78px)", fontWeight: 700, letterSpacing: "0px", lineHeight: 0.94, marginBottom: 18 }}>
             About <span style={{ color: "#14B8A6" }}>Me</span>
           </h1>
           <p style={{ fontSize: "clamp(13px, 1.8vw, 15.5px)", color: "rgba(255,255,255,0.38)", lineHeight: 1.9, maxWidth: 560, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>

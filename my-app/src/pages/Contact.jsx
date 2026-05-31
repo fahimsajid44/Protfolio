@@ -12,6 +12,7 @@ function CursorSpotlight() {
     const fn = (e) => { x.set(e.clientX); y.set(e.clientY); };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <motion.div style={{
@@ -43,6 +44,7 @@ function CursorDot() {
       window.removeEventListener("mouseover", ov);
       window.removeEventListener("mouseout", ou);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <motion.div style={{
@@ -297,6 +299,7 @@ export default function Contact() {
     const fn = (e) => { mouseXN.set(e.clientX / window.innerWidth); mouseYN.set(e.clientY / window.innerHeight); };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -365,7 +368,7 @@ export default function Contact() {
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, color: "rgba(255,255,255,0.22)" }}>--reach-out</span>
             <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }} style={{ color: "#14B8A6", fontFamily: "'DM Mono', monospace", fontSize: 11 }}>▋</motion.span>
           </div>
-          <h1 style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 700, letterSpacing: "-3px", lineHeight: 0.94, marginBottom: 18 }}>
+          <h1 style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 700, letterSpacing: "0px", lineHeight: 0.94, marginBottom: 18 }}>
             Let's <span style={{ color: "#14B8A6" }}>Connect</span>
           </h1>
           <p style={{ fontSize: "clamp(13px, 1.8vw, 15.5px)", color: "rgba(255,255,255,0.38)", lineHeight: 1.9, maxWidth: 520, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>

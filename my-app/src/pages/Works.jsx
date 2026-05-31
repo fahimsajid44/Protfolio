@@ -26,7 +26,7 @@ function CursorDot() {
       window.removeEventListener("mouseover", ov);
       window.removeEventListener("mouseout", ou);
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 9999,
@@ -47,7 +47,7 @@ function CursorSpotlight() {
     const fn = (e) => { x.set(e.clientX); y.set(e.clientY); };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 0,
@@ -107,8 +107,7 @@ const TECH_ICONS = {
 };
 
 /* ══════════════════════════════════════════
-   PROJECT DATA — update the placeholder URLs
-   with your real links before deploying
+   PROJECT DATA
 ══════════════════════════════════════════ */
 const PROJECTS = [
   {
@@ -175,7 +174,6 @@ const PROJECTS = [
       demo:       "",
     },
   },
-
 ];
 
 /* ══════════════════════════════════════════
@@ -567,7 +565,7 @@ function StatsRow() {
 }
 
 /* ══════════════════════════════════════════
-   HERO — Journal-matched + floating right visual
+   HERO
 ══════════════════════════════════════════ */
 function HeroSection({ mouseXN, mouseYN }) {
   const c = { hidden: {}, visible: { transition: { staggerChildren: 0.09, delayChildren: 0.15 } } };
@@ -607,7 +605,6 @@ function HeroSection({ mouseXN, mouseYN }) {
           </div>
         </motion.div>
 
-        {/* "Selected Works" — mono uppercase, matches Journal */}
         <motion.p variants={it} style={{
           fontSize: "clamp(10px, 1.2vw, 12px)", color: "rgba(255,255,255,0.28)",
           letterSpacing: 3, textTransform: "uppercase",
@@ -616,21 +613,18 @@ function HeroSection({ mouseXN, mouseYN }) {
           Selected Works
         </motion.p>
 
-        {/* H1 — EXACTLY matches Journal: clamp(38px,6vw,76px), letterSpacing -3px, lineHeight 0.94 */}
         <motion.h1 variants={it} style={{
           fontFamily: "'Clash Display', sans-serif",
           fontSize: "clamp(38px, 6vw, 76px)",
           fontWeight: 700,
-          letterSpacing: "-3px",
+          letterSpacing: "0px",
           lineHeight: 0.94,
           marginBottom: 18,
         }}>
           Things I've{" "}
           <span style={{ color: "#14B8A6" }}>Built</span>
-         
         </motion.h1>
 
-        {/* Body copy — matches Journal paragraph style */}
         <motion.p variants={it} style={{
           fontFamily: "'DM Sans', sans-serif",
           fontSize: "clamp(13px, 1.8vw, 15.5px)",
@@ -641,7 +635,6 @@ function HeroSection({ mouseXN, mouseYN }) {
           applications built with the MERN stack, shipped with care.
         </motion.p>
 
-        {/* Mini stat row — mirrors Journal hero */}
         <motion.div variants={it} style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
           {[
             { value: "4",    label: "featured projects" },
@@ -688,7 +681,7 @@ export default function Works() {
     };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div style={{

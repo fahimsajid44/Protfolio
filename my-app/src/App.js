@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ScrollToTop from "./ScrollToTop";    // ← add this import
+import ScrollToTop from "./ScrollToTop";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -10,10 +10,15 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Resume from "./pages/Resume";
 
+// ✅ Disable browser scroll restoration
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
 function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />    {/* ← add this line */}
+      <ScrollToTop />
       <Navbar />
 
       <Routes>

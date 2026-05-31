@@ -123,7 +123,7 @@ async function generateAndDownloadPDF() {
   /* LANGUAGES */
   ly = sectionHeader("Languages", LEFT_X, ly);
   [{ lang: "Bengali", pct: 100 }, { lang: "English (B2)", pct: 75 }].forEach(l => {
-    font("normal", 7); rgb(...GRAY); text(l.lang, LEFT_X, ly); 
+    font("normal", 7); rgb(...GRAY); text(l.lang, LEFT_X, ly);
     fill(30, 30, 36); rect(LEFT_X, ly + 1, COL_W_L, 2);
     fill(...TEAL); rect(LEFT_X, ly + 1, COL_W_L * l.pct / 100, 2);
     ly += 7;
@@ -241,6 +241,7 @@ function CursorDot() {
   const sx = useSpring(x, { stiffness: 500, damping: 32 });
   const sy = useSpring(y, { stiffness: 500, damping: 32 });
   const [big, setBig] = useState(false);
+
   useEffect(() => {
     const mv = (e) => { x.set(e.clientX); y.set(e.clientY); };
     const ov = (e) => { if (e.target.closest("button,a,[data-hover]")) setBig(true); };
@@ -253,7 +254,8 @@ function CursorDot() {
       window.removeEventListener("mouseover", ov);
       window.removeEventListener("mouseout", ou);
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 9999,
@@ -273,11 +275,13 @@ function CursorSpotlight() {
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 60, damping: 18 });
   const sy = useSpring(y, { stiffness: 60, damping: 18 });
+
   useEffect(() => {
     const fn = (e) => { x.set(e.clientX); y.set(e.clientY); };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 0,
@@ -449,7 +453,7 @@ export default function Resume() {
     };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDownload = async () => {
     setDownloading(true);
@@ -629,7 +633,7 @@ export default function Resume() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{ marginBottom: 56 }}
         >
-          <h1>
+          <h1 style={{ letterSpacing: "0px" }}>
             Curriculum <span style={{ color: "#14B8A6" }}>Vitae</span>
           </h1>
           <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.3)", fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>

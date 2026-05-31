@@ -12,7 +12,7 @@ function CursorSpotlight() {
     const fn = (e) => { x.set(e.clientX); y.set(e.clientY); };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, [x, y]);
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 0,
@@ -43,7 +43,7 @@ function CursorDot() {
       window.removeEventListener("mouseover", ov);
       window.removeEventListener("mouseout", ou);
     };
-  }, []);
+  }, [x, y]);
   return (
     <motion.div style={{
       position: "fixed", pointerEvents: "none", zIndex: 9999,
@@ -196,7 +196,7 @@ export default function Journal() {
     };
     window.addEventListener("mousemove", fn);
     return () => window.removeEventListener("mousemove", fn);
-  }, []);
+  }, [mouseXN, mouseYN]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#06060A", color: "white", fontFamily: "'Clash Display', sans-serif", position: "relative", overflowX: "hidden", cursor: "none" }}>
@@ -278,7 +278,7 @@ export default function Journal() {
             >▋</motion.span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 700, letterSpacing: "-3px", lineHeight: 0.94, marginBottom: 18 }}>
+          <h1 style={{ fontSize: "clamp(38px, 6vw, 76px)", fontWeight: 700, letterSpacing: "0px", lineHeight: 0.94, marginBottom: 18 }}>
             The <span style={{ color: "#14B8A6" }}>Journal</span>
           </h1>
           <p style={{ fontSize: "clamp(13px, 1.8vw, 15.5px)", color: "rgba(255,255,255,0.38)", lineHeight: 1.9, maxWidth: 540, fontFamily: "'DM Sans', sans-serif", fontWeight: 300, marginBottom: 32 }}>
